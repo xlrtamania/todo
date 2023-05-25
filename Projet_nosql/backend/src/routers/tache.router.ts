@@ -9,7 +9,7 @@ const router = Router();
 
 router.get("/",asyncHandler(
     async (req,res)=>{
-        const taches= await TacheModel.find();
+        const taches= await TacheModel.find({uid:req.params.uid});
         res.send(taches);
     }
 ));
@@ -17,7 +17,7 @@ router.get("/",asyncHandler(
 router.get("/search/:searchTerm", asyncHandler(
     async (req, res) => {
         const searchRegex = new RegExp(req.params.searchTerm, 'i');
-        const taches = await TacheModel.find({titre: {$regex:searchRegex}})
+        const taches = await TacheModel.find({titre: {$regex:searchRegex},uid:req.params.uid})
         res.send(taches);
     }
 ))
@@ -34,7 +34,7 @@ router.get("/:tacheId", asyncHandler(
 
 router.post('/addTache', asyncHandler(
     async (req, res) => {
-        const {titre, dateModification, statue,dateLimite,commentaire, sousTaches}=req.body;
+        const {uid,titre, dateModification, statue,dateLimite,commentaire, sousTaches}=req.body;
         const tache = await TacheModel.findOne({titre});
         if(tache){
             res.status(HTTP_BAD_REQUEST)
@@ -43,6 +43,7 @@ router.post('/addTache', asyncHandler(
         }
 
         const newTache:Tache = {
+            uid,
             titre:titre.toLowerCase(),
             dateModification,
             statue,
@@ -59,8 +60,9 @@ router.post('/addTache', asyncHandler(
 
 router.put("/:tacheId", asyncHandler(
     async (req, res) => {
-        const {titre, dateModification, statue,dateLimite,commentaire, sousTaches}=req.body;
+        const {uid,titre, dateModification, statue,dateLimite,commentaire, sousTaches}=req.body;
         const newTache:Tache = {
+            uid,
             titre:titre.toLowerCase(),
             dateModification,
             statue,
