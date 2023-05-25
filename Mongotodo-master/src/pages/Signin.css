@@ -1,0 +1,11 @@
+#animation{
+    background-image: url("https://fauux.neocities.org/statue/main_cloud_1400_1.gif");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+
+
+}
